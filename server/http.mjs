@@ -5,6 +5,19 @@ export function json(status, body, headers = {}) {
   });
 }
 
+/**
+ * Préconditions de version : If-Match / If-None-Match (HTTP standard), ou X-Base-Version en double.
+ * Le CDN de Netlify se sert lui-même de ces en-têtes pour son cache et ne les transmet pas toujours
+ * à la fonction : sans le double, une création arrivait sans précondition (428).
+ */
+export function preconditions(request) {
+  const base = request.headers.get("x-base-version");
+  return {
+    ifMatch: request.headers.get("if-match") ?? (base && base !== "new" ? `"${base}"` : null),
+    ifNoneMatch: request.headers.get("if-none-match") ?? (base === "new" ? "*" : null),
+  };
+}
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const isUuid = (value) => typeof value === "string" && UUID.test(value);
 

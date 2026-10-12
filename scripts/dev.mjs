@@ -78,7 +78,13 @@ async function toWebRequest(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
   const body = chunks.length ? Buffer.concat(chunks) : undefined;
-  return new Request(new URL(req.url, SITE_URL), { method: req.method, headers: req.headers, body: ["GET", "HEAD"].includes(req.method) ? undefined : body });
+  const headers = { ...req.headers };
+  // STRIP_CONDITIONAL=1 imite le CDN de Netlify, qui ne transmet pas toujours If-Match / If-None-Match aux fonctions.
+  if (process.env.STRIP_CONDITIONAL) {
+    delete headers["if-match"];
+    delete headers["if-none-match"];
+  }
+  return new Request(new URL(req.url, SITE_URL), { method: req.method, headers, body: ["GET", "HEAD"].includes(req.method) ? undefined : body });
 }
 
 async function sendWeb(res, response) {

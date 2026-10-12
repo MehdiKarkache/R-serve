@@ -64,7 +64,7 @@ Réserve est l'inventaire du garde-manger d'un foyer : ce qu'il y a dans le réf
 - **Serveur** : clés Blobs `items/<foyer>/<id>`, avec une pierre tombale versionnée pour chaque suppression (les autres appareils l'apprennent), `push/<foyer>/<appareil>` et `foyers/<foyer>` (date de dernière activité, ou date d'effacement).
 - **Effacement** (`DELETE /api/foyer`) : la fiche passe à « effacé », puis produits et abonnements sont supprimés. Toute requête suivante sur ce foyer reçoit **410 Gone**, et chaque appareil qui la reçoit vide sa base et repart avec un nouveau foyer (`syncAll`, `resetFoyer`).
 - **Outbox** (`src/shared/sync.js`, script partagé par la page et le SW) :
-  - **Envoi** : `PUT /api/items/:id`, avec `If-None-Match: *` pour une création et `If-Match: "<version>"` pour une modification ; `DELETE`, avec `If-Match`. Ensuite, `GET /api/items?since=…` récupère les changements des autres appareils, avec 60 s de recouvrement.
+  - **Envoi** : `PUT /api/items/:id`, avec `If-None-Match: *` pour une création et `If-Match: "<version>"` pour une modification ; `DELETE`, avec `If-Match`. Chaque précondition est doublée d'un en-tête `X-Base-Version` : le CDN de Netlify se sert de `If-None-Match` pour son propre cache et ne le transmet pas toujours à la fonction ; sans ce double, une création était refusée (428). Les envois refusés sont retentés une fois à chaque lancement. Ensuite, `GET /api/items?since=…` récupère les changements des autres appareils, avec 60 s de recouvrement.
   - **Quand** :
     - après chaque modification : tag Background Sync `reserve-sync` (Chrome, Edge ; l'envoi part même si l'app est fermée), plus un envoi direct si la page est ouverte et en ligne ;
     - à l'événement `online` (le repli pour Firefox et Safari) ;

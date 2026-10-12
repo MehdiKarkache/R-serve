@@ -1,5 +1,5 @@
 import { itemKey, loadItems } from "./store.mjs";
-import { json } from "./http.mjs";
+import { json, preconditions } from "./http.mjs";
 import { RETENTION } from "./foyer.mjs";
 
 const UNITS = ["pièce", "g", "kg", "mL", "L"];
@@ -63,8 +63,7 @@ export async function putItem(store, foyerId, itemId, request, deviceId) {
 
   const key = itemKey(foyerId, itemId);
   const current = await store.getWithMetadata(key, { type: "json" });
-  const ifMatch = request.headers.get("if-match");
-  const ifNoneMatch = request.headers.get("if-none-match");
+  const { ifMatch, ifNoneMatch } = preconditions(request);
   if (!ifMatch && !ifNoneMatch) return json(428, { error: "En-tête If-Match ou If-None-Match requis" });
   if (current && (ifNoneMatch === "*" || (ifMatch && ifMatch !== `"${current.data.version}"`))) {
     return json(412, current.data);
@@ -91,7 +90,7 @@ export async function deleteItem(store, foyerId, itemId, request, deviceId) {
   const current = await store.getWithMetadata(key, { type: "json" });
   if (!current) return json(200, { id: itemId, deleted: true, version: 0 });
   if (current.data.deleted) return json(200, current.data);
-  if (request.headers.get("if-match") !== `"${current.data.version}"`) return json(412, current.data);
+  if (preconditions(request).ifMatch !== `"${current.data.version}"`) return json(412, current.data);
 
   const tombstone = { id: itemId, deleted: true, name: current.data.name, version: current.data.version + 1, serverUpdatedAt: Date.now(), updatedBy: deviceId };
   const write = await store.setJSON(key, tombstone, { onlyIfMatch: current.etag });

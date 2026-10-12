@@ -194,6 +194,20 @@
     await tx.done;
   }
 
+  /**
+   * Au lancement : les envois refusés sont retentés une fois. Une nouvelle version de l'app a pu corriger
+   * la cause (c'était le cas des refus 428) ; un produit vraiment invalide est simplement refusé de nouveau.
+   */
+  async function retryRejected() {
+    const tx = (await openDb()).transaction("outbox", "readwrite");
+    for (const entry of await tx.store.getAll()) {
+      if (entry.blocked !== "rejected") continue;
+      const { blocked, reason, ...pending } = entry;
+      await tx.store.put(pending);
+    }
+    await tx.done;
+  }
+
   scope.ReserveDB = {
     openDb,
     getMeta,
@@ -212,5 +226,6 @@
     mergeFromServer,
     joinFoyer,
     resetFoyer,
+    retryRejected,
   };
 })(self);

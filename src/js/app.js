@@ -550,6 +550,7 @@ const params = new URLSearchParams(location.search);
 if (params.get("filtre") === "urgent") state.status = "urgent";
 
 await db.getIdentity();
+await db.retryRejected();
 await refresh();
 await renderLastSync();
 

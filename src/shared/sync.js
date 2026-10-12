@@ -55,12 +55,16 @@
       if (entry.blocked) continue;
       let response;
       if (entry.op === "delete") {
-        response = await api(`/api/items/${entry.itemId}`, { method: "DELETE", headers: { "If-Match": `"${entry.baseVersion}"` } });
+        const headers = { "If-Match": `"${entry.baseVersion}"`, "X-Base-Version": String(entry.baseVersion) };
+        response = await api(`/api/items/${entry.itemId}`, { method: "DELETE", headers });
       } else {
         const item = await db.getItem(entry.itemId);
         if (!item) continue;
         // Version 0 = jamais envoyé : création. Sinon on dit au serveur sur quelle version on a travaillé.
-        const precondition = item.version > 0 ? { "If-Match": `"${item.version}"` } : { "If-None-Match": "*" };
+        // X-Base-Version double l'en-tête standard : le CDN de Netlify ne transmet pas toujours If-None-Match / If-Match.
+        const precondition = item.version > 0
+          ? { "If-Match": `"${item.version}"`, "X-Base-Version": String(item.version) }
+          : { "If-None-Match": "*", "X-Base-Version": "new" };
         response = await api(`/api/items/${item.id}`, { method: "PUT", headers: precondition, body: toServer(item) });
       }
       report[await handleResponse(entry, response)] += 1;
