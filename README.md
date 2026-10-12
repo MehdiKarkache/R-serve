@@ -2,7 +2,7 @@
 
 Réserve note ce qu'il y a dans le réfrigérateur, le congélateur et le placard, avec les dates de péremption. L'application s'installe sur le téléphone, fonctionne sans réseau, se partage entre les membres du foyer et envoie chaque matin un rappel des produits à consommer vite.
 
-- **Application** : *‹ https://votre-site.netlify.app ›*
+- **Application** : [marvelous-biscuit-d8744a.netlify.app](https://marvelous-biscuit-d8744a.netlify.app)
 - **Document technique** : [DOC-TECHNIQUE.md](DOC-TECHNIQUE.md)
 - Projet du TP PWA, M2 Informatique, Università di Corsica.
 
@@ -67,7 +67,7 @@ Netlify Blobs et la fonction planifiée ne demandent aucune configuration. Ensui
 ## Vérifier en production
 
 ```bash
-SITE=https://votre-site.netlify.app
+SITE=https://marvelous-biscuit-d8744a.netlify.app
 curl -s -A "GPTBot" $SITE/ | grep -c "<tr>"                     # 9 : 8 repères + l'en-tête du tableau
 curl -s -A "GPTBot" $SITE/guide/ | grep -c "<tr>"               # 36 : 30 aliments + 6 en-têtes
 curl -s -A "ClaudeBot" $SITE/guide.md | head                     # la jumelle Markdown
