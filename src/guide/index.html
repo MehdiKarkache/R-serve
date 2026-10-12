@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{{GUIDE_TITLE}} : réfrigérateur, congélateur, placard — Réserve</title>
+    <meta name="description" content="{{GUIDE_DESCRIPTION}}" />
+    <link rel="canonical" href="{{SITE_URL}}/guide/" />
+    <link rel="alternate" type="text/markdown" href="/guide.md" title="Guide de conservation en Markdown" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Réserve" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#2f6b4f" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16201a" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Réserve" />
+    <meta property="og:title" content="{{GUIDE_TITLE}}" />
+    <meta property="og:description" content="{{GUIDE_DESCRIPTION}}" />
+    <meta property="og:url" content="{{SITE_URL}}/guide/" />
+    <meta property="og:image" content="{{SITE_URL}}/social/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Réserve : un bocal vert et la liste des produits à consommer vite" />
+    <meta property="article:modified_time" content="{{GUIDE_UPDATED}}" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+{{GUIDE_JSONLD}}
+    </script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/guide.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Aller au contenu</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Réserve, accueil">
+        <img src="/icons/icon.svg" alt="" width="32" height="32" />
+        <span>Réserve</span>
+      </a>
+      <nav class="header-nav" aria-label="Navigation principale">
+        <a href="/">Mon inventaire</a>
+      </nav>
+      <span id="network-status" class="status-pill" role="status">En ligne</span>
+      <button id="install-button" class="button button-small" type="button" hidden>Installer</button>
+    </header>
+
+    <main id="main" class="container prose-page">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Réserve</a> › <span aria-current="page">Guide de conservation</span></nav>
+
+      <article>
+        <header class="hero">
+          <h1>{{GUIDE_TITLE}}</h1>
+          <p class="lead">Les restes d'un repas se gardent trois jours au réfrigérateur, la viande hachée crue vingt-quatre heures, le pain deux à trois jours. Ce guide donne la durée de conservation de {{GUIDE_COUNT}} aliments courants au réfrigérateur, au congélateur et au placard.</p>
+          <p class="meta">Mis à jour le <time datetime="{{GUIDE_UPDATED}}">{{GUIDE_UPDATED_LABEL}}</time>. {{GUIDE_DISCLAIMER}}</p>
+        </header>
+
+        <aside class="card callout" aria-labelledby="dlc-title">
+          <h2 id="dlc-title">DLC ou DDM : quelle date respecter ?</h2>
+          <p><strong>DLC — « à consommer jusqu'au »</strong> : limite impérative. Viande, poisson, plats cuisinés frais : ne pas consommer après la date.</p>
+          <p><strong>DDM — « à consommer de préférence avant »</strong> : indication de qualité. Pâtes, conserves, biscuits : sans danger après la date si l'emballage est intact, mais le goût peut baisser.</p>
+        </aside>
+
+        <nav class="card toc" aria-labelledby="toc-title">
+          <h2 id="toc-title">Sommaire</h2>
+          <ul>{{GUIDE_TOC}}
+            <li><a href="#faq">Questions fréquentes</a></li>
+          </ul>
+        </nav>
+{{GUIDE_TABLES}}
+
+        <section id="faq" class="faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">Questions fréquentes</h2>
+{{GUIDE_FAQ}}
+        </section>
+
+        <section class="sources" aria-labelledby="sources-title">
+          <h2 id="sources-title">Sources</h2>
+          <ul>{{GUIDE_SOURCES}}
+          </ul>
+        </section>
+      </article>
+
+      <section class="card cta" aria-labelledby="cta-title">
+        <h2 id="cta-title">Suivez vos produits avec Réserve</h2>
+        <p>Notez ce que vous avez, recevez un rappel avant la date et partagez l'inventaire avec votre foyer. Gratuit, sans compte, utilisable hors ligne.</p>
+        <p><a class="button" href="/">Ouvrir mon inventaire</a></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Réserve, projet du cours M2 Informatique, Università di Corsica.</p>
+      <p><a href="/">Mon inventaire</a> · <a href="/confidentialite/">Vos données</a> · <a href="/guide.md">Ce guide en Markdown</a> · <a href="/llms.txt">llms.txt</a></p>
+    </footer>
+
+    <div id="update-banner" class="update-banner" role="alert" hidden>
+      <p>Une nouvelle version de Réserve est prête.</p>
+      <div class="actions">
+        <button id="update-later" class="button button-secondary" type="button">Plus tard</button>
+        <button id="update-now" class="button" type="button">Mettre à jour</button>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

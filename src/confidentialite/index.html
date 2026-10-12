@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Vos données et vos droits — Réserve</title>
+    <meta name="description" content="Ce que Réserve enregistre sur votre appareil et sur le serveur, pourquoi, combien de temps, et comment télécharger ou effacer vos données. Sans compte, sans cookie, sans mesure d'audience." />
+    <link rel="canonical" href="{{SITE_URL}}/confidentialite/" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="theme-color" content="#2f6b4f" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16201a" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Réserve" />
+    <meta property="og:title" content="Vos données et vos droits — Réserve" />
+    <meta property="og:description" content="Ce que Réserve enregistre, où, combien de temps, et comment l'effacer." />
+    <meta property="og:url" content="{{SITE_URL}}/confidentialite/" />
+    <meta property="og:image" content="{{SITE_URL}}/social/og-image.png" />
+    <meta property="og:image:alt" content="Réserve : un bocal vert et la liste des produits à consommer vite" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/guide.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Aller au contenu</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Réserve, accueil">
+        <img src="/icons/icon.svg" alt="" width="32" height="32" />
+        <span>Réserve</span>
+      </a>
+      <nav class="header-nav" aria-label="Navigation principale">
+        <a href="/">Mon inventaire</a>
+      </nav>
+      <span id="network-status" class="status-pill" role="status">En ligne</span>
+      <button id="install-button" class="button button-small" type="button" hidden>Installer</button>
+    </header>
+
+    <main id="main" class="container prose-page">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Réserve</a> › <span aria-current="page">Vos données</span></nav>
+
+      <article>
+        <header class="hero">
+          <h1>Vos données et vos droits</h1>
+          <p class="lead">Réserve n'a ni compte, ni adresse e-mail, ni cookie, ni mesure d'audience, ni publicité. Votre inventaire est enregistré sur votre appareil ; une copie est gardée sur le serveur pour être partagée avec les appareils de votre foyer. Vous pouvez la télécharger ou l'effacer à tout moment, depuis l'application.</p>
+          <p class="meta">Mis à jour le <time datetime="{{PRIVACY_UPDATED}}">{{PRIVACY_UPDATED_LABEL}}</time>.</p>
+        </header>
+
+        <section class="card prose" aria-labelledby="device-title">
+          <h2 id="device-title">Ce qui reste sur votre appareil</h2>
+          <ul>
+            <li><strong>Votre inventaire</strong> : nom, quantité, emplacement, date de péremption, code-barres et, si vous en prenez une, une vignette photo de 480 pixels au plus. Les modifications pas encore envoyées attendent dans la même base (IndexedDB).</li>
+            <li><strong>Deux identifiants tirés au hasard</strong> : celui du foyer, qui sert de clé d'accès à l'inventaire partagé, et celui de l'appareil.</li>
+            <li><strong>Les fichiers de l'application</strong>, pour qu'elle s'ouvre sans réseau (Cache Storage).</li>
+            <li><strong>Une préférence</strong> : l'astuce d'installation pour iPhone a été masquée (localStorage).</li>
+          </ul>
+          <p>Ces données restent jusqu'à ce que vous les effaciez : bouton « Supprimer les données du foyer », ou réglages du site dans le navigateur.</p>
+        </section>
+
+        <section class="card prose" aria-labelledby="server-title">
+          <h2 id="server-title">Ce qui est envoyé au serveur, et pourquoi</h2>
+          <div class="table-scroll">
+            <table class="guide-table">
+              <caption>Données conservées par le serveur de Réserve</caption>
+              <thead>
+                <tr><th scope="col">Donnée</th><th scope="col">Pourquoi</th><th scope="col">Combien de temps</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Les produits du foyer (mêmes champs que sur l'appareil), avec leur numéro de version, la date de modification et l'identifiant de l'appareil qui les a modifiés</th>
+                  <td data-label="Pourquoi">Partager l'inventaire entre les appareils du foyer ; détecter deux modifications du même produit</td>
+                  <td data-label="Conservé">Tant que le foyer est utilisé ; effacés après 12 mois sans aucune synchronisation</td>
+                </tr>
+                <tr>
+                  <th scope="row">Un produit supprimé : son nom et son numéro de version</th>
+                  <td data-label="Pourquoi">Prévenir les autres appareils de la suppression</td>
+                  <td data-label="Conservé">90 jours</td>
+                </tr>
+                <tr>
+                  <th scope="row">L'abonnement aux rappels : l'adresse fournie par le service de notification de votre navigateur, ses clés de chiffrement, la date du dernier rappel</th>
+                  <td data-label="Pourquoi">Envoyer le rappel du matin</td>
+                  <td data-label="Conservé">Jusqu'à la désactivation des rappels, l'expiration signalée par le navigateur ou l'effacement du foyer</td>
+                </tr>
+                <tr>
+                  <th scope="row">La date de dernière synchronisation du foyer</th>
+                  <td data-label="Pourquoi">Appliquer la durée de 12 mois ci-dessus</td>
+                  <td data-label="Conservé">Comme le foyer ; après un effacement, la seule date de l'effacement est gardée un an</td>
+                </tr>
+                <tr>
+                  <th scope="row">Un code-barres saisi (« Trouver le nom »)</th>
+                  <td data-label="Pourquoi">Demander le nom du produit à Open Food Facts</td>
+                  <td data-label="Conservé">Non conservé</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card prose" aria-labelledby="third-title">
+          <h2 id="third-title">Qui d'autre intervient</h2>
+          <ul>
+            <li><strong>Netlify, Inc.</strong> (États-Unis) héberge le site, l'API et leur stockage. Comme tout hébergeur, il tient des journaux techniques (adresse IP, page demandée) selon sa propre politique de confidentialité.</li>
+            <li><strong>Le service de notification de votre navigateur</strong> (Google, Mozilla, Apple ou Microsoft) achemine le rappel. Son contenu est chiffré pour votre appareil (norme RFC 8291) : le service ne peut pas le lire.</li>
+            <li><strong>Open Food Facts</strong> reçoit le code-barres, envoyé par notre serveur : votre adresse IP ne lui est pas transmise.</li>
+            <li>Aucun script, police ou image n'est chargé depuis un autre site.</li>
+          </ul>
+        </section>
+
+        <section class="card prose" aria-labelledby="permissions-title">
+          <h2 id="permissions-title">Caméra et notifications</h2>
+          <ul>
+            <li><strong>Caméra</strong> : demandée seulement quand vous touchez « Prendre une photo » ou « Scanner ». L'image de la caméra n'est ni enregistrée ni envoyée ; seule la vignette que vous choisissez de garder rejoint l'inventaire.</li>
+            <li><strong>Notifications</strong> : demandées seulement quand vous touchez « Activer les rappels ».</li>
+            <li>Refuser l'une ou l'autre n'empêche pas d'utiliser Réserve.</li>
+          </ul>
+        </section>
+
+        <section class="card prose" id="droits" aria-labelledby="rights-title">
+          <h2 id="rights-title">Vos droits, et où les exercer</h2>
+          <ul>
+            <li><strong>Accès et portabilité</strong> : « Télécharger mes données », dans la section <a href="/#foyer">Foyer et synchronisation</a>, produit un fichier JSON de tout l'inventaire.</li>
+            <li><strong>Rectification</strong> : modifiez le produit dans l'inventaire.</li>
+            <li><strong>Effacement</strong> : « Supprimer les données du foyer » efface tout sur le serveur et sur cet appareil ; les autres appareils du foyer effacent leur copie à leur prochaine synchronisation.</li>
+            <li><strong>Opposition aux rappels</strong> : « Désactiver », dans la section Rappels.</li>
+            <li><strong>Réclamation</strong> : auprès de la <a href="https://www.cnil.fr/fr/plaintes" rel="noopener">CNIL</a>.</li>
+          </ul>
+          <p>Réserve est un projet étudiant du cours M2 Informatique de l'Università di Corsica, publié par {{AUTHOR}}.</p>
+        </section>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>Réserve, projet du cours M2 Informatique, Università di Corsica. Sans compte, sans publicité, sans traceur.</p>
+      <p><a href="/">Mon inventaire</a> · <a href="/guide/">Guide de conservation</a> · <a href="/llms.txt">llms.txt</a></p>
+    </footer>
+
+    <div id="update-banner" class="update-banner" role="alert" hidden>
+      <p>Une nouvelle version de Réserve est prête.</p>
+      <div class="actions">
+        <button id="update-later" class="button button-secondary" type="button">Plus tard</button>
+        <button id="update-now" class="button" type="button">Mettre à jour</button>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

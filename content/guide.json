@@ -1,0 +1,125 @@
+{
+  "title": "Guide de conservation des aliments",
+  "description": "Combien de temps se conservent le lait entamé, les restes, la viande hachée ou le pain ? Repères au réfrigérateur, au congélateur et au placard, et différence entre DLC et DDM.",
+  "updated": "2026-10-11",
+  "disclaimer": "Les durées de ce guide sont des repères prudents pour un produit bien conservé. La date et la mention de l'emballage (« à consommer dans les X jours après ouverture ») priment toujours.",
+  "sources": [
+    {
+      "name": "Date limite de consommation (DLC) et date de durabilité minimale (DDM)",
+      "publisher": "Ministère de l'Économie (economie.gouv.fr)",
+      "date": "2025-10-22",
+      "url": "https://www.economie.gouv.fr/particuliers/date-limite-consommation-dlc-ddm"
+    },
+    {
+      "name": "Petit guide de la conservation des aliments et règles d'hygiène",
+      "publisher": "Santé publique France — Manger Bouger (sante.fr)",
+      "date": "2022-04-21",
+      "url": "https://www.sante.fr/petit-guide-de-la-conservation-des-aliments-et-regles-dhygiene"
+    }
+  ],
+  "locations": {
+    "frigo": "Réfrigérateur",
+    "congelateur": "Congélateur",
+    "placard": "Placard"
+  },
+  "categories": [
+    {
+      "id": "laitiers",
+      "name": "Produits laitiers et œufs",
+      "entries": [
+        { "id": "lait-uht-entame", "name": "Lait UHT entamé", "frigo": "3 jours", "congelateur": null, "placard": null, "days": { "frigo": 3 }, "tip": "Dans la porte du réfrigérateur, bouteille bien refermée." },
+        { "id": "lait-frais-entame", "name": "Lait frais pasteurisé entamé", "frigo": "2 jours", "congelateur": null, "placard": null, "days": { "frigo": 2 } },
+        { "id": "creme-entamee", "name": "Crème fraîche entamée", "frigo": "3 à 5 jours (voir l'étiquette)", "congelateur": null, "placard": null, "days": { "frigo": 3 } },
+        { "id": "fromage-pate-dure", "name": "Fromage à pâte dure entamé (comté, emmental)", "frigo": "2 à 3 semaines", "congelateur": "2 mois, râpé", "placard": null, "days": { "frigo": 14, "congelateur": 60 } },
+        { "id": "oeufs", "name": "Œufs", "frigo": "Jusqu'à la date de la boîte", "congelateur": null, "placard": "Jusqu'à la date de la boîte", "days": {}, "tip": "Les préparations à base d'œufs crus (mayonnaise maison, mousse au chocolat) se consomment dans les 24 heures." },
+        { "id": "jus-entame", "name": "Jus de fruits entamé", "frigo": "3 à 5 jours", "congelateur": null, "placard": null, "days": { "frigo": 3 } }
+      ]
+    },
+    {
+      "id": "viandes",
+      "name": "Viandes, poissons et charcuterie",
+      "entries": [
+        { "id": "viande-hachee", "name": "Viande hachée crue", "frigo": "24 heures", "congelateur": "3 mois", "placard": null, "days": { "frigo": 1, "congelateur": 90 }, "tip": "À ranger dans la zone la plus froide (0 à 4 °C)." },
+        { "id": "volaille-crue", "name": "Volaille crue", "frigo": "1 à 2 jours", "congelateur": "6 mois", "placard": null, "days": { "frigo": 1, "congelateur": 180 } },
+        { "id": "viande-morceaux", "name": "Viande rouge crue en morceaux", "frigo": "2 à 3 jours", "congelateur": "6 mois", "placard": null, "days": { "frigo": 2, "congelateur": 180 } },
+        { "id": "poisson-frais", "name": "Poisson frais", "frigo": "24 heures", "congelateur": "3 mois", "placard": null, "days": { "frigo": 1, "congelateur": 90 } },
+        { "id": "jambon-entame", "name": "Jambon cuit entamé", "frigo": "2 à 3 jours (voir l'étiquette)", "congelateur": null, "placard": null, "days": { "frigo": 2 } }
+      ]
+    },
+    {
+      "id": "restes",
+      "name": "Restes et plats maison",
+      "entries": [
+        { "id": "restes-repas", "name": "Restes de repas maison", "frigo": "3 jours", "congelateur": "2 à 3 mois", "placard": null, "days": { "frigo": 3, "congelateur": 60 }, "tip": "Les mettre au froid moins de 2 heures après la cuisson." },
+        { "id": "soupe-maison", "name": "Soupe maison", "frigo": "3 jours", "congelateur": "3 mois", "placard": null, "days": { "frigo": 3, "congelateur": 90 } },
+        { "id": "riz-cuit", "name": "Riz ou pâtes cuits", "frigo": "1 à 2 jours", "congelateur": "2 mois", "placard": null, "days": { "frigo": 1, "congelateur": 60 }, "tip": "Refroidir rapidement : le riz cuit laissé à température ambiante est à risque." },
+        { "id": "oeufs-crus-prepa", "name": "Mayonnaise ou mousse maison (œufs crus)", "frigo": "24 heures", "congelateur": null, "placard": null, "days": { "frigo": 1 } },
+        { "id": "conserve-ouverte", "name": "Conserve ouverte", "frigo": "2 à 3 jours, transvasée", "congelateur": null, "placard": null, "days": { "frigo": 2 }, "tip": "Transvaser dans un récipient fermé. Une conserve bombée, rouillée ou à l'odeur suspecte se jette." },
+        { "id": "sauce-bocal", "name": "Sauce tomate en bocal entamée", "frigo": "3 à 5 jours (voir l'étiquette)", "congelateur": "3 mois", "placard": null, "days": { "frigo": 3, "congelateur": 90 } },
+        { "id": "confiture-entamee", "name": "Confiture entamée", "frigo": "1 mois", "congelateur": null, "placard": null, "days": { "frigo": 30 } }
+      ]
+    },
+    {
+      "id": "fruits-legumes",
+      "name": "Fruits et légumes",
+      "entries": [
+        { "id": "salade-sachet", "name": "Salade en sachet entamée", "frigo": "1 à 2 jours", "congelateur": null, "placard": null, "days": { "frigo": 1 } },
+        { "id": "laitue", "name": "Laitue entière", "frigo": "3 à 5 jours, bac à légumes", "congelateur": null, "placard": null, "days": { "frigo": 3 } },
+        { "id": "fruits-rouges", "name": "Fraises et fruits rouges", "frigo": "2 à 3 jours", "congelateur": "6 mois", "placard": null, "days": { "frigo": 2, "congelateur": 180 } },
+        { "id": "carottes", "name": "Carottes", "frigo": "2 à 3 semaines", "congelateur": "6 mois, blanchies", "placard": null, "days": { "frigo": 14, "congelateur": 180 } },
+        { "id": "pommes", "name": "Pommes", "frigo": "3 à 4 semaines", "congelateur": null, "placard": "1 semaine", "days": { "frigo": 21, "placard": 7 } },
+        { "id": "bananes", "name": "Bananes", "frigo": null, "congelateur": "3 mois, épluchées", "placard": "4 à 6 jours", "days": { "placard": 4, "congelateur": 90 } },
+        { "id": "tomates", "name": "Tomates", "frigo": "1 semaine (moins de goût)", "congelateur": null, "placard": "3 à 5 jours", "days": { "placard": 3, "frigo": 7 }, "tip": "Elles gardent mieux leur goût à l'air libre." },
+        { "id": "pommes-de-terre", "name": "Pommes de terre", "frigo": null, "congelateur": null, "placard": "3 à 5 semaines, au frais et à l'obscurité", "days": { "placard": 21 } }
+      ]
+    },
+    {
+      "id": "epicerie",
+      "name": "Pain et épicerie",
+      "entries": [
+        { "id": "pain", "name": "Pain frais", "frigo": null, "congelateur": "2 à 3 mois", "placard": "2 à 3 jours", "days": { "placard": 2, "congelateur": 60 } },
+        { "id": "pates-riz-secs", "name": "Pâtes et riz secs", "frigo": null, "congelateur": null, "placard": "Jusqu'à la DDM (souvent 1 à 2 ans)", "days": { "placard": 365 } },
+        { "id": "farine", "name": "Farine entamée", "frigo": null, "congelateur": null, "placard": "6 mois, bien fermée", "days": { "placard": 180 } }
+      ]
+    },
+    {
+      "id": "surgeles",
+      "name": "Surgelés",
+      "entries": [
+        { "id": "surgele-commerce", "name": "Produit surgelé du commerce", "frigo": "24 heures une fois décongelé", "congelateur": "Jusqu'à la DDM, à −18 °C", "placard": null, "days": { "frigo": 1 }, "tip": "Un produit décongelé ne se recongèle pas." }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Quelle est la différence entre la DLC et la DDM ?",
+      "a": "La DLC (« à consommer jusqu'au ») est une limite impérative : le produit ne doit plus être consommé après cette date. La DDM (« à consommer de préférence avant ») est une indication de qualité : après la date, un produit à l'emballage intact n'est pas dangereux, mais il peut avoir perdu du goût ou de la texture.",
+      "source": 0
+    },
+    {
+      "q": "Combien de temps garder les restes d'un repas au réfrigérateur ?",
+      "a": "Trois jours au maximum. Les restes doivent être mis au réfrigérateur moins de deux heures après la cuisson, en petites portions pour refroidir vite.",
+      "source": 1
+    },
+    {
+      "q": "À quelle température régler le réfrigérateur et le congélateur ?",
+      "a": "La zone la plus froide du réfrigérateur doit être à 4 °C au maximum, et le congélateur à −18 °C. Un thermomètre permet de repérer la zone la plus froide.",
+      "source": 1
+    },
+    {
+      "q": "Peut-on recongeler un aliment décongelé ?",
+      "a": "Non : un produit décongelé ne se recongèle pas. Gardez-le au réfrigérateur et consommez-le rapidement.",
+      "source": 1
+    },
+    {
+      "q": "Combien de temps se conserve une mayonnaise maison ?",
+      "a": "Vingt-quatre heures au maximum, au réfrigérateur. C'est la règle pour toutes les préparations à base d'œufs crus, comme la mousse au chocolat.",
+      "source": 1
+    },
+    {
+      "q": "Que faire d'une conserve bombée ou rouillée ?",
+      "a": "La jeter sans la goûter. Une conserve bombée, rouillée ou qui dégage une odeur suspecte à l'ouverture ne doit pas être consommée.",
+      "source": 1
+    }
+  ]
+}

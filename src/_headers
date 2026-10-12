@@ -1,0 +1,18 @@
+# En-têtes HTTP posés par Netlify (en local : scripts/dev.mjs lit ce même fichier).
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=()
+
+# Le Service Worker est toujours revalidé : une nouvelle version est détectée dès le prochain contrôle.
+/sw.js
+  Cache-Control: no-cache
+
+# Jumelles Markdown : lisibles par les agents, mais pas indexées comme pages concurrentes du HTML.
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Robots-Tag: noindex

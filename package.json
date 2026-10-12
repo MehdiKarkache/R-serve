@@ -1,0 +1,26 @@
+{
+  "name": "reserve-pwa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Réserve — inventaire du garde-manger installable, utilisable hors ligne, synchronisé entre les membres du foyer.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/dev.mjs",
+    "assets": "node scripts/generate-assets.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
+    "test": "node tests/e2e.mjs",
+    "vapid": "web-push generate-vapid-keys"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.4",
+    "idb": "^8.0.4",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.0"
+  }
+}

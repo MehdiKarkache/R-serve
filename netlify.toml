@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  # web-push est un module CommonJS (require("crypto")…) : empaqueté en ESM par esbuild, il plante
+  # (« Dynamic require is not supported »). Externe, il est copié tel quel et chargé nativement par Node.
+  external_node_modules = ["web-push"]

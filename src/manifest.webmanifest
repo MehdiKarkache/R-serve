@@ -1,0 +1,39 @@
+{
+  "id": "/",
+  "name": "Réserve — inventaire du garde-manger",
+  "short_name": "Réserve",
+  "description": "Inventaire du garde-manger installable : vos produits et leurs dates de péremption, même hors ligne, partagés avec votre foyer.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f3ec",
+  "theme_color": "#2f6b4f",
+  "categories": ["food", "lifestyle", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ajouter un produit",
+      "short_name": "Ajouter",
+      "url": "/?action=ajouter",
+      "icons": [{ "src": "/icons/shortcut-add-96.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "À consommer vite",
+      "short_name": "Urgent",
+      "url": "/?filtre=urgent",
+      "icons": [{ "src": "/icons/shortcut-urgent-96.png", "sizes": "96x96", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    { "src": "/screenshots/mobile.png", "sizes": "540x1170", "type": "image/png", "form_factor": "narrow", "label": "L'inventaire trié par date de péremption" },
+    { "src": "/screenshots/desktop.png", "sizes": "1280x800", "type": "image/png", "form_factor": "wide", "label": "Inventaire, liste de courses et rappels" }
+  ]
+}

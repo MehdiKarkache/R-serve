@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{{SITE_TITLE}}</title>
+    <meta name="description" content="{{SITE_DESCRIPTION}}" />
+    <link rel="canonical" href="{{SITE_URL}}/" />
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Présentation de Réserve en Markdown" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="theme-color" content="#2f6b4f" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16201a" media="(prefers-color-scheme: dark)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Réserve" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Réserve" />
+    <meta property="og:title" content="{{SITE_TITLE}}" />
+    <meta property="og:description" content="{{SITE_DESCRIPTION}}" />
+    <meta property="og:url" content="{{SITE_URL}}/" />
+    <meta property="og:image" content="{{SITE_URL}}/social/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Réserve : un bocal vert et la liste des produits à consommer vite" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Réserve",
+        "alternateName": "Réserve — inventaire du garde-manger",
+        "description": "{{SITE_DESCRIPTION}}",
+        "url": "{{SITE_URL}}/",
+        "image": "{{SITE_URL}}/social/og-image.png",
+        "inLanguage": "fr",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Navigateur récent (Chrome, Edge, Firefox, Safari)",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "featureList": [
+          "Inventaire du réfrigérateur, du congélateur et du placard",
+          "Fonctionne hors ligne, synchronisation au retour du réseau",
+          "Inventaire partagé entre les membres du foyer",
+          "Rappel quotidien des produits qui périment",
+          "Photo et lecture du code-barres avec la caméra",
+          "Liste de courses partageable",
+          "Guide de conservation des aliments"
+        ]
+      }
+    </script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/vendor/idb.js" defer></script>
+    <script src="/shared/db.js" defer></script>
+    <script src="/shared/sync.js" defer></script>
+    <script src="/js/app.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#inventaire">Aller à l'inventaire</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Réserve, accueil">
+        <img src="/icons/icon.svg" alt="" width="32" height="32" />
+        <span>Réserve</span>
+      </a>
+      <nav class="header-nav" aria-label="Navigation principale">
+        <a href="/guide/">Guide</a>
+      </nav>
+      <span id="network-status" class="status-pill" role="status">En ligne</span>
+      <button id="install-button" class="button button-small" type="button" hidden>Installer</button>
+    </header>
+
+    <main id="main" class="container">
+      <section class="hero" aria-labelledby="page-title">
+        <h1 id="page-title">Réserve, l'inventaire de votre garde-manger</h1>
+        <p class="lead">Notez ce qu'il y a dans le réfrigérateur, le congélateur et le placard, avec les dates de péremption. Réserve marche sans réseau, se partage avec votre foyer et vous prévient le matin de ce qu'il faut consommer vite.</p>
+      </section>
+
+      <noscript>
+        <p class="notice">Réserve a besoin de JavaScript pour gérer votre inventaire. Le <a href="/guide/">guide de conservation</a> reste lisible sans.</p>
+      </noscript>
+
+      <p id="offline-banner" class="notice notice-offline" hidden>
+        <strong>Hors ligne.</strong> Vos modifications sont enregistrées sur cet appareil et partiront au retour du réseau. La synchronisation, la recherche d'un code-barres et l'activation des rappels attendent la connexion.
+      </p>
+
+      <div id="ios-install-hint" class="notice" hidden>
+        <p>Sur iPhone et iPad : touchez <strong>Partager</strong> puis <strong>Sur l'écran d'accueil</strong> pour installer Réserve et recevoir les rappels.</p>
+        <button id="ios-hint-close" class="link-button" type="button">Compris</button>
+      </div>
+
+      <div id="join-banner" class="notice notice-info" hidden>
+        <p id="join-text">Rejoindre ce foyer ? Vos produits actuels y seront ajoutés, et vous verrez l'inventaire partagé.</p>
+        <div class="actions">
+          <button id="join-confirm" class="button" type="button">Rejoindre le foyer</button>
+          <button id="join-cancel" class="button button-secondary" type="button">Ignorer</button>
+        </div>
+      </div>
+
+      <section id="conflicts" class="card card-alert" aria-labelledby="conflicts-title" hidden>
+        <h2 id="conflicts-title">À vérifier : modifié sur un autre appareil</h2>
+        <p class="hint">Rien n'a été écrasé. Choisissez la version à garder.</p>
+        <ul id="conflict-list" class="conflict-list"></ul>
+      </section>
+
+      <section id="inventaire" class="card" aria-labelledby="inventory-title">
+        <div class="section-heading">
+          <h2 id="inventory-title">Mon inventaire</h2>
+          <button id="add-button" class="button" type="button"><span aria-hidden="true">+</span> Ajouter</button>
+        </div>
+
+        <div class="chips" role="group" aria-label="Filtrer par état">
+          <button class="chip" type="button" data-status="all" aria-pressed="true">Tout <span id="count-all" class="chip-count">0</span></button>
+          <button class="chip chip-warning" type="button" data-status="urgent" aria-pressed="false">À consommer vite <span id="count-urgent" class="chip-count">0</span></button>
+          <button class="chip chip-danger" type="button" data-status="expired" aria-pressed="false">Périmés <span id="count-expired" class="chip-count">0</span></button>
+        </div>
+
+        <div class="toolbar">
+          <label class="visually-hidden" for="search">Rechercher un produit</label>
+          <input id="search" type="search" placeholder="Rechercher un produit" autocomplete="off" />
+          <div class="segmented" role="group" aria-label="Filtrer par emplacement">
+            <button type="button" data-location="all" aria-pressed="true">Tout</button>
+            <button type="button" data-location="frigo" aria-pressed="false">Frigo</button>
+            <button type="button" data-location="congelateur" aria-pressed="false">Congélo</button>
+            <button type="button" data-location="placard" aria-pressed="false">Placard</button>
+          </div>
+        </div>
+
+        <p id="empty-state" class="empty-state">Votre garde-manger est vide pour l'instant. Ajoutez un premier produit avec le bouton « Ajouter ».</p>
+        <p id="no-results" class="empty-state" hidden>Aucun produit ne correspond à ce filtre.</p>
+        <ul id="item-list" class="item-list"></ul>
+      </section>
+
+      <section id="courses" class="card" aria-labelledby="shopping-title">
+        <div class="section-heading">
+          <h2 id="shopping-title">À racheter</h2>
+          <button id="share-button" class="button button-secondary" type="button">Partager la liste</button>
+        </div>
+        <p class="hint">Un produit dont la quantité tombe à zéro arrive ici.</p>
+        <p id="shopping-empty" class="empty-state">Rien à racheter.</p>
+        <ul id="shopping-list" class="item-list item-list-compact"></ul>
+        <p id="share-result" class="result" role="status"></p>
+      </section>
+
+      <div class="two-columns">
+        <section id="foyer" class="card" aria-labelledby="foyer-title">
+          <h2 id="foyer-title">Foyer et synchronisation</h2>
+          <dl class="facts">
+            <div><dt>Dernière synchronisation</dt><dd id="last-sync">jamais</dd></div>
+            <div><dt>En attente d'envoi</dt><dd id="pending-count">0</dd></div>
+            <div><dt>Foyer</dt><dd><code id="foyer-code">…</code></dd></div>
+          </dl>
+          <div class="actions">
+            <button id="sync-button" class="button button-secondary" type="button" data-requires-network>Synchroniser</button>
+            <button id="invite-button" class="button button-secondary" type="button">Inviter un membre du foyer</button>
+          </div>
+          <p class="hint">Le lien d'invitation donne accès à l'inventaire : ne le partagez qu'avec les personnes qui vivent avec vous.</p>
+          <form id="join-form" class="inline-form">
+            <label for="join-input">Rejoindre un foyer : collez le lien reçu</label>
+            <div class="form-row">
+              <input id="join-input" type="text" autocomplete="off" placeholder="https://…/?foyer=…" required />
+              <button class="button button-secondary" type="submit">Rejoindre</button>
+            </div>
+          </form>
+          <h3 class="subhead">Vos données</h3>
+          <p class="hint">Ce que Réserve enregistre, où, et combien de temps : <a href="/confidentialite/">vos données et vos droits</a>.</p>
+          <div class="actions">
+            <button id="export-button" class="button button-secondary" type="button">Télécharger mes données</button>
+            <button id="erase-button" class="button button-danger" type="button" data-requires-network>Supprimer les données du foyer</button>
+          </div>
+          <p id="foyer-result" class="result" role="status"></p>
+        </section>
+
+        <section id="rappels" class="card" aria-labelledby="reminders-title">
+          <h2 id="reminders-title">Rappels de péremption</h2>
+          <p>Chaque matin, Réserve envoie une notification si des produits périment dans les deux jours, même quand l'application est fermée.</p>
+          <div class="actions">
+            <button id="reminders-enable" class="button" type="button" data-requires-network>Activer les rappels</button>
+            <button id="reminders-test" class="button button-secondary" type="button" data-requires-network hidden>Envoyer un rappel maintenant</button>
+            <button id="reminders-disable" class="button button-secondary" type="button" hidden>Désactiver</button>
+          </div>
+          <p id="reminders-result" class="result" role="status"></p>
+          <p class="hint">Sur l'icône de l'application installée, un badge compte les produits à consommer vite.</p>
+        </section>
+      </div>
+
+      <section id="comment" class="card prose" aria-labelledby="how-title">
+        <h2 id="how-title">Comment ça marche</h2>
+        <ol class="steps">
+          <li><strong>Ajoutez vos produits.</strong> Nom, quantité, emplacement et date de péremption. La caméra photographie le produit ou lit son code-barres ; pour un produit sans date (restes, lait entamé), Réserve propose une date d'après le guide de conservation.</li>
+          <li><strong>Hors ligne, rien ne se perd.</strong> Tout est enregistré sur l'appareil, puis envoyé au serveur dès que le réseau revient.</li>
+          <li><strong>Partagez avec le foyer.</strong> Un lien d'invitation, et chaque membre voit le même inventaire. Si deux personnes modifient le même produit, Réserve demande laquelle garder au lieu d'écraser.</li>
+          <li><strong>Consommez à temps.</strong> Un rappel le matin, et ce qui est fini rejoint la liste de courses.</li>
+        </ol>
+      </section>
+
+      <section id="reperes" class="card" aria-labelledby="guide-title">
+        <h2 id="guide-title">Combien de temps se conservent les aliments ?</h2>
+        <p>Les restes d'un repas se gardent trois jours au réfrigérateur, la viande hachée crue vingt-quatre heures. Voici quelques repères ; le <a href="/guide/">guide de conservation</a> en donne {{GUIDE_COUNT}}, avec leurs sources.</p>
+        {{GUIDE_EXCERPT}}
+        <p class="hint">{{GUIDE_DISCLAIMER}}</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Réserve, projet du cours M2 Informatique, Università di Corsica. Sans compte, sans publicité, sans traceur.</p>
+      <p><a href="/guide/">Guide de conservation</a> · <a href="/confidentialite/">Vos données</a> · <a href="/index.md">Version Markdown</a> · <a href="/llms.txt">llms.txt</a></p>
+    </footer>
+
+    <dialog id="item-dialog" class="dialog" aria-labelledby="item-dialog-title">
+      <form id="item-form" class="item-form" novalidate toolname="ajouter_produit" tooldescription="Ajoute un produit à l'inventaire du garde-manger de cet appareil : nom, quantité, unité, emplacement (frigo, congélateur ou placard) et, si elle est connue, date de péremption." toolautosubmit>
+        <div class="dialog-header">
+          <h2 id="item-dialog-title">Ajouter un produit</h2>
+          <button type="button" class="icon-button" data-close aria-label="Fermer">✕</button>
+        </div>
+
+        <div class="field">
+          <label for="item-name">Nom du produit</label>
+          <input id="item-name" name="name" list="guide-names" required maxlength="80" autocomplete="off" toolparamdescription="Nom du produit, 80 caractères au plus, par exemple « Yaourts nature »." />
+          <datalist id="guide-names">
+        {{GUIDE_DATALIST}}
+          </datalist>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="item-quantity">Quantité</label>
+            <input id="item-quantity" name="quantity" type="number" min="0" max="100000" step="any" inputmode="decimal" value="1" required toolparamdescription="Quantité restante, dans l'unité choisie." />
+          </div>
+          <div class="field">
+            <label for="item-unit">Unité</label>
+            <select id="item-unit" name="unit" toolparamdescription="Unité de la quantité.">
+              <option value="pièce">pièce(s)</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="mL">mL</option>
+              <option value="L">L</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="field">
+          <legend>Emplacement</legend>
+          <div class="segmented segmented-radio">
+            <label><input type="radio" name="location" value="frigo" toolparamdescription="Emplacement : frigo, congelateur ou placard." checked /> Frigo</label>
+            <label><input type="radio" name="location" value="congelateur" toolparamdescription="Emplacement : frigo, congelateur ou placard." /> Congélateur</label>
+            <label><input type="radio" name="location" value="placard" toolparamdescription="Emplacement : frigo, congelateur ou placard." /> Placard</label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="item-expires">Date de péremption <span class="optional">(facultatif)</span></label>
+          <input id="item-expires" name="expiresOn" type="date" toolparamdescription="Date de péremption (DLC ou DDM) au format AAAA-MM-JJ ; laisser vide si elle est inconnue." />
+          <p id="expiry-suggestion" class="suggestion" hidden>
+            <span id="expiry-suggestion-text"></span>
+            <button id="expiry-suggestion-apply" class="link-button" type="button">Utiliser cette date</button>
+          </p>
+        </div>
+
+        <div class="field">
+          <span class="field-label" id="photo-label">Photo <span class="optional">(facultatif)</span></span>
+          <div class="photo-field" role="group" aria-labelledby="photo-label">
+            <img id="photo-preview" class="photo-preview" alt="Photo du produit" width="88" height="88" hidden />
+            <div class="actions">
+              <button id="photo-camera" class="button button-secondary" type="button">Prendre une photo</button>
+              <label class="button button-secondary file-button">Choisir une image<input id="photo-file" type="file" accept="image/*" /></label>
+              <button id="photo-remove" class="link-button" type="button" hidden>Retirer la photo</button>
+            </div>
+          </div>
+          <p id="photo-result" class="result" role="status"></p>
+        </div>
+
+        <div class="field">
+          <label for="item-barcode">Code-barres <span class="optional">(facultatif)</span></label>
+          <div class="form-row">
+            <input id="item-barcode" name="barcode" inputmode="numeric" pattern="\d{8,14}" maxlength="14" autocomplete="off" toolparamdescription="Code-barres EAN ou UPC, 8 à 14 chiffres, facultatif." />
+            <button id="barcode-scan" class="button button-secondary" type="button" hidden>Scanner</button>
+            <button id="barcode-lookup" class="button button-secondary" type="button" data-requires-network>Trouver le nom</button>
+          </div>
+          <p id="barcode-result" class="result" role="status"></p>
+          <p id="barcode-hint" class="hint" hidden>La lecture du code-barres par la caméra n'existe pas sur ce navigateur : saisissez les chiffres imprimés sous le code.</p>
+        </div>
+
+        <p id="form-error" class="result" data-state="error" role="alert"></p>
+
+        <div class="dialog-footer">
+          <button id="delete-item" class="button button-danger" type="button" hidden>Supprimer</button>
+          <span class="spacer"></span>
+          <button class="button button-secondary" type="button" data-close>Annuler</button>
+          <button class="button" type="submit">Enregistrer</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="camera-dialog" class="dialog dialog-camera" aria-labelledby="camera-title">
+      <div class="dialog-header">
+        <h2 id="camera-title">Caméra</h2>
+        <button type="button" class="icon-button" data-close aria-label="Fermer la caméra">✕</button>
+      </div>
+      <div class="camera-frame">
+        <video id="camera-video" playsinline muted></video>
+        <div id="scan-guide" class="scan-guide" hidden></div>
+      </div>
+      <p id="camera-status" class="result" role="status"></p>
+      <div class="dialog-footer">
+        <span class="spacer"></span>
+        <button id="camera-capture" class="button" type="button">Prendre la photo</button>
+      </div>
+    </dialog>
+
+    <div id="update-banner" class="update-banner" role="alert" hidden>
+      <p>Une nouvelle version de Réserve est prête.</p>
+      <div class="actions">
+        <button id="update-later" class="button button-secondary" type="button">Plus tard</button>
+        <button id="update-now" class="button" type="button">Mettre à jour</button>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
